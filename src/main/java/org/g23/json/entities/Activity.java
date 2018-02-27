@@ -25,8 +25,16 @@ public class Activity {
     private List<Activity_> activity = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    
+    public Activity() {}
 
-    @JsonProperty("timestampMs")
+    public Activity(Timestamp timestampMs, List<Activity_> activity) {
+		super();
+		this.timestampMs = timestampMs;
+		this.activity = activity;
+	}
+
+	@JsonProperty("timestampMs")
     public Timestamp getTimestampMs() {
         return timestampMs;
     }

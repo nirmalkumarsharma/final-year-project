@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class CalculateTimeDifference
 {
-	public static long compareTwoTimeStamps(Timestamp timestamp1, Timestamp timestamp2)
+	public long compareTwoTimeStamps(Timestamp timestamp1, Timestamp timestamp2)
 	{
 	    long milliseconds1 = timestamp1.getTime();
 	    long milliseconds2 = timestamp2.getTime();

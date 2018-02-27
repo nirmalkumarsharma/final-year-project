@@ -34,8 +34,19 @@ public class Location {
     private List<Activity> activity = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    
+    public Location() {}
 
-    @JsonProperty("timestampMs")
+    public Location(Timestamp timestampMs, int latitudeE7, int longitudeE7, int accuracy, List<Activity> activity) {
+		super();
+		this.timestampMs = timestampMs;
+		this.latitudeE7 = latitudeE7;
+		this.longitudeE7 = longitudeE7;
+		this.accuracy = accuracy;
+		this.activity = activity;
+	}
+
+	@JsonProperty("timestampMs")
     public Timestamp getTimestampMs() {
         return timestampMs;
     }

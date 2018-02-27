@@ -23,8 +23,16 @@ public class Activity_ {
     private int confidence;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    
+    public Activity_() {}
 
-    @JsonProperty("type")
+    public Activity_(String type, int confidence) {
+		super();
+		this.type = type;
+		this.confidence = confidence;
+	}
+
+	@JsonProperty("type")
     public String getType() {
         return type;
     }
