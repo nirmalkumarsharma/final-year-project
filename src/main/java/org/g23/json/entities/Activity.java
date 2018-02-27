@@ -1,5 +1,6 @@
 package org.g23.json.entities;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,23 +20,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Activity {
 
     @JsonProperty("timestampMs")
-    private String timestampMs;
+    private Timestamp timestampMs;
     @JsonProperty("activity")
     private List<Activity_> activity = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("timestampMs")
-    public String getTimestampMs() {
+    public Timestamp getTimestampMs() {
         return timestampMs;
     }
 
     @JsonProperty("timestampMs")
-    public void setTimestampMs(String timestampMs) {
+    public void setTimestampMs(Timestamp timestampMs) {
         this.timestampMs = timestampMs;
     }
 
-    public Activity withTimestampMs(String timestampMs) {
+    public Activity withTimestampMs(Timestamp timestampMs) {
         this.timestampMs = timestampMs;
         return this;
     }
