@@ -1,4 +1,4 @@
-package org.g22.json.entities;
+package org.g23.json.entities;
 
 import java.io.File;
 import java.io.IOException;
