@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.g23.calc.CalculateDistance;
 import org.g23.calc.CalculateTimeDifference;
@@ -36,7 +37,7 @@ public class StayPointDetection
 		CalculateDistance gpsistance=new CalculateDistance();
 		CalculateTimeDifference timeDiff=new CalculateTimeDifference();
 		
-		ArrayList<StayPoint> stayPoints=new ArrayList<StayPoint>();
+		HashSet<StayPoint> stayPoints=new HashSet<StayPoint>();
 		
 		while(i<pointNum)
 		{
@@ -83,32 +84,56 @@ public class StayPointDetection
 	private static StayPoint computeMeanPoint(int i, int j)
 	{
 		int noOfPoints=j-i+1;
-		long time=0,delTime=0;
-		int lati=0, longi=0, accuracy=0, delLati=0, delLongi=0, delAccuracy=0;
+		double timeF=0;
+		double latiF=0, longiF=0, accuracyF=0, confidenceF=50;
 		
 		for(int itr=i; itr<=j; itr++)
 		{
-			lati+=data.getLocations().get(itr).getLatitudeE7()/noOfPoints;
-			delLati+=data.getLocations().get(itr).getLatitudeE7()%noOfPoints;
 			
-			longi+=data.getLocations().get(itr).getLongitudeE7()/noOfPoints;
-			delLongi+=data.getLocations().get(itr).getLongitudeE7()%noOfPoints;
+			latiF += (double) data.getLocations().get(itr).getLatitudeE7() / (double) noOfPoints;
+			longiF += (double) data.getLocations().get(itr).getLongitudeE7() / (double) noOfPoints;
+			timeF += (double) data.getLocations().get(itr).getTimestampMs().getTime() / (double) noOfPoints;
+			accuracyF += (double) data.getLocations().get(itr).getAccuracy()/ (double) noOfPoints;
 			
-			time+=data.getLocations().get(itr).getTimestampMs().getTime()/noOfPoints;
-			delTime+=data.getLocations().get(itr).getTimestampMs().getTime()%noOfPoints;
+			ArrayList<Activity> activities=(ArrayList<Activity>) data.getLocations().get(itr).getActivity();
 			
-			accuracy+=data.getLocations().get(itr).getAccuracy()/noOfPoints;
-			delAccuracy+=data.getLocations().get(itr).getAccuracy()%noOfPoints;
-			
+			if(activities!=null)
+			{
+				confidenceF=0;
+				int count=0;
+				for (Activity activity : activities)
+				{
+					ArrayList<Activity_> activity_s=(ArrayList<Activity_>) activity.getActivity();
+					for (Activity_ activity_ : activity_s)
+					{
+						if(activity_.getType().equals("STILL"))
+						{
+							count++;
+						}
+					}
+				}
+				
+				for (Activity activity : activities)
+				{
+					ArrayList<Activity_> activity_s=(ArrayList<Activity_>) activity.getActivity();
+					for (Activity_ activity_ : activity_s)
+					{
+						if(activity_.getType().equals("STILL"))
+						{
+							confidenceF+=activity_.getConfidence()/count;
+						}
+					}
+				}
+			}
 		}
 		
-		lati+=delLati/noOfPoints;
-		longi+=delLongi/noOfPoints;
-		time+=delTime/noOfPoints;
-		accuracy+=delAccuracy/noOfPoints;
+		int lati = Double.valueOf(latiF).intValue();
+		int longi = Double.valueOf(longiF).intValue();
+		int time = Double.valueOf(timeF).intValue();
+		int accuracy = Double.valueOf(accuracyF).intValue();
+		int confidence = Double.valueOf(confidenceF).intValue();
 		
-		
-		Activity_ activity_=new Activity_("STILL",100-accuracy);
+		Activity_ activity_=new Activity_("STILL",confidence);
 		
 		ArrayList<Activity_> activities_ = new ArrayList<Activity_>();
 		activities_.add(activity_);
