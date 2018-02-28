@@ -105,7 +105,7 @@ public class StayPointDetection
 		lati+=delLati/noOfPoints;
 		longi+=delLongi/noOfPoints;
 		time+=delTime/noOfPoints;
-		accuracy+=delAccuracy;
+		accuracy+=delAccuracy/noOfPoints;
 		
 		
 		Activity_ activity_=new Activity_("STILL",100-accuracy);
