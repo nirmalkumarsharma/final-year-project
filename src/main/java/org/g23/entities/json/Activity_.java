@@ -1,4 +1,4 @@
-package org.g23.json.entities;
+package org.g23.entities.json;
 
 import java.util.HashMap;
 import java.util.Map;

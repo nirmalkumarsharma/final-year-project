@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import org.g23.calc.CalculateDistance;
 import org.g23.calc.CalculateTimeDifference;
-import org.g23.json.entities.Activity;
-import org.g23.json.entities.Activity_;
-import org.g23.json.entities.LocationData;
-import org.g23.json.entities.StayPoint;
+import org.g23.entities.json.Activity;
+import org.g23.entities.json.Activity_;
+import org.g23.entities.json.LocationData;
+import org.g23.entities.json.StayPoint;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
