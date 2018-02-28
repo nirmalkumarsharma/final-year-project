@@ -120,7 +120,7 @@ public class StayPointDetection
 					{
 						if(activity_.getType().equals("STILL"))
 						{
-							confidenceF+=activity_.getConfidence()/count;
+							confidenceF+= (double) activity_.getConfidence()/ (double) count;
 						}
 					}
 				}
