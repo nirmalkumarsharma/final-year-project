@@ -1,7 +1,9 @@
-package org.g23.entities.json;
+package org.g23.entities.json.out;
 
 import java.sql.Timestamp;
 import java.util.List;
+
+import org.g23.entities.json.in.Activity;
 
 public class StayPoint
 {

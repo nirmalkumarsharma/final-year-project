@@ -3,10 +3,10 @@ package org.g23.calc;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import org.g23.entities.json.Activity;
-import org.g23.entities.json.Activity_;
-import org.g23.entities.json.LocationData;
-import org.g23.entities.json.StayPoint;
+import org.g23.entities.json.in.Activity;
+import org.g23.entities.json.in.Activity_;
+import org.g23.entities.json.in.LocationData;
+import org.g23.entities.json.out.StayPoint;
 
 public class ComputeMean
 {

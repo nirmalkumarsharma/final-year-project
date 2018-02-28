@@ -9,8 +9,8 @@ import java.util.HashSet;
 import org.g23.calc.CalculateDistance;
 import org.g23.calc.CalculateTimeDifference;
 import org.g23.calc.ComputeMean;
-import org.g23.entities.json.LocationData;
-import org.g23.entities.json.StayPoint;
+import org.g23.entities.json.in.LocationData;
+import org.g23.entities.json.out.StayPoint;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
