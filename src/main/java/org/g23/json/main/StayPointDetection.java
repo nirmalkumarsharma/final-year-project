@@ -81,17 +81,32 @@ public class StayPointDetection
 	}
 	private static StayPoint computeMeanPoint(int i, int j)
 	{
-		int nos=j-i+1;
-		long time=0;
-		int lati=0,longi=0,accuracy=0;
+		int noOfPoints=j-i+1;
+		long time=0,delTime=0;
+		int lati=0, longi=0, accuracy=0, delLati=0, delLongi=0, delAccuracy=0;
 		
 		for(int itr=i; itr<=j; itr++)
 		{
-			lati+=data.getLocations().get(itr).getLatitudeE7()/nos;
-			longi+=data.getLocations().get(itr).getLongitudeE7()/nos;
-			time+=data.getLocations().get(itr).getTimestampMs().getTime()/nos;
-			accuracy+=data.getLocations().get(itr).getAccuracy()/nos;
+			lati+=data.getLocations().get(itr).getLatitudeE7()/noOfPoints;
+			delLati+=data.getLocations().get(itr).getLatitudeE7()%noOfPoints;
+			
+			longi+=data.getLocations().get(itr).getLongitudeE7()/noOfPoints;
+			delLongi+=data.getLocations().get(itr).getLongitudeE7()%noOfPoints;
+			
+			time+=data.getLocations().get(itr).getTimestampMs().getTime()/noOfPoints;
+			delTime+=data.getLocations().get(itr).getTimestampMs().getTime()%noOfPoints;
+			
+			accuracy+=data.getLocations().get(itr).getAccuracy()/noOfPoints;
+			delAccuracy+=data.getLocations().get(itr).getAccuracy()%noOfPoints;
+			
 		}
+		
+		lati+=delLati/noOfPoints;
+		longi+=delLongi/noOfPoints;
+		time+=delTime/noOfPoints;
+		accuracy+=delAccuracy;
+		
+		
 		Activity_ activity_=new Activity_("STILL",100-accuracy);
 		
 		ArrayList<Activity_> activities_ = new ArrayList<Activity_>();
