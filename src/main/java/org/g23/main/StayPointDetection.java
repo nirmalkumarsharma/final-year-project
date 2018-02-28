@@ -1,4 +1,4 @@
-package org.g23.json.main;
+package org.g23.main;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import org.g23.json.calc.CalculateDistance;
-import org.g23.json.calc.CalculateTimeDifference;
+import org.g23.calc.CalculateDistance;
+import org.g23.calc.CalculateTimeDifference;
 import org.g23.json.entities.Activity;
 import org.g23.json.entities.Activity_;
 import org.g23.json.entities.LocationData;
@@ -79,6 +79,7 @@ public class StayPointDetection
 		out.close();
 		System.out.println("Stay Points at : /home/nirmal/Downloads/Stay_Point.json");
 	}
+	
 	private static StayPoint computeMeanPoint(int i, int j)
 	{
 		int noOfPoints=j-i+1;

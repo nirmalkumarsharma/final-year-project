@@ -1,4 +1,4 @@
-package org.g23.json.calc;
+package org.g23.calc;
 
 public class CalculateDistance
 {
