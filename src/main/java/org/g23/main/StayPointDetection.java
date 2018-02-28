@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.g23.calc.CalculateDistance;
 import org.g23.calc.CalculateTimeDifference;
-import org.g23.entities.json.Activity;
-import org.g23.entities.json.Activity_;
+import org.g23.calc.ComputeMean;
 import org.g23.entities.json.LocationData;
 import org.g23.entities.json.StayPoint;
 
@@ -23,13 +21,13 @@ public class StayPointDetection
 {
 	private static final double distThresh = 0.1; /* In Kilometers */
 	private static final long timeThresh = 15; /* In Minutes */
-	private static LocationData data;
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException
 	{
 		File file=new File("/home/nirmal/Downloads/Location_History.json");
 		ObjectMapper mapper=new ObjectMapper();
-		data=mapper.readValue(file, LocationData.class);
+		LocationData data=mapper.readValue(file, LocationData.class);
+		ComputeMean computeMean=new ComputeMean();
 		
 		int i=0;
 		int pointNum=data.getLocations().size();
@@ -60,7 +58,7 @@ public class StayPointDetection
 					
 					if(timeSpan>timeThresh)
 					{
-						stayPoints.add(computeMeanPoint(i, j));
+						stayPoints.add(computeMean.computeMeanPoint(i, j,data));
 						i=j;
 						Token=1;
 					}
@@ -79,72 +77,5 @@ public class StayPointDetection
 		out.print(stayPointFile);
 		out.close();
 		System.out.println("Stay Points at : /home/nirmal/Downloads/Stay_Point.json");
-	}
-	
-	private static StayPoint computeMeanPoint(int i, int j)
-	{
-		int noOfPoints=j-i+1;
-		double timeF=0;
-		double latiF=0, longiF=0, accuracyF=0, confidenceF=50;
-		
-		for(int itr=i; itr<=j; itr++)
-		{
-			
-			latiF += (double) data.getLocations().get(itr).getLatitudeE7() / (double) noOfPoints;
-			longiF += (double) data.getLocations().get(itr).getLongitudeE7() / (double) noOfPoints;
-			timeF += (double) data.getLocations().get(itr).getTimestampMs().getTime() / (double) noOfPoints;
-			accuracyF += (double) data.getLocations().get(itr).getAccuracy()/ (double) noOfPoints;
-			
-			ArrayList<Activity> activities=(ArrayList<Activity>) data.getLocations().get(itr).getActivity();
-			
-			if(activities!=null)
-			{
-				confidenceF=0;
-				int count=0;
-				for (Activity activity : activities)
-				{
-					ArrayList<Activity_> activity_s=(ArrayList<Activity_>) activity.getActivity();
-					for (Activity_ activity_ : activity_s)
-					{
-						if(activity_.getType().equals("STILL"))
-						{
-							count++;
-						}
-					}
-				}
-				
-				for (Activity activity : activities)
-				{
-					ArrayList<Activity_> activity_s=(ArrayList<Activity_>) activity.getActivity();
-					for (Activity_ activity_ : activity_s)
-					{
-						if(activity_.getType().equals("STILL"))
-						{
-							confidenceF+= (double) activity_.getConfidence()/ (double) count;
-						}
-					}
-				}
-			}
-		}
-		
-		int lati = Double.valueOf(latiF).intValue();
-		int longi = Double.valueOf(longiF).intValue();
-		int time = Double.valueOf(timeF).intValue();
-		int accuracy = Double.valueOf(accuracyF).intValue();
-		int confidence = Double.valueOf(confidenceF).intValue();
-		
-		Activity_ activity_=new Activity_("STILL",confidence);
-		
-		ArrayList<Activity_> activities_ = new ArrayList<Activity_>();
-		activities_.add(activity_);
-		
-		Activity activity=new Activity(new Timestamp(time),activities_);
-		
-		ArrayList<Activity> activities = new ArrayList<Activity>();
-		activities.add(activity);
-		
-		StayPoint point=new StayPoint(new Timestamp(time), lati, longi, accuracy, data.getLocations().get(i).getTimestampMs(), data.getLocations().get(j).getTimestampMs(), activities);
-		
-		return point;
 	}
 }
