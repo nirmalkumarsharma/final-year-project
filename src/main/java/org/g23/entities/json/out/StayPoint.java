@@ -67,4 +67,13 @@ public class StayPoint
 	public void setActivity(List<Activity> activity) {
 		this.activity = activity;
 	}
+	@Override
+	public int hashCode()
+	{
+		int hashCode=1;
+		int prime=31;
+		hashCode=prime*hashCode+latitudeE7;
+		hashCode=prime*hashCode+longitudeE7;
+		return hashCode;
+	}
 }

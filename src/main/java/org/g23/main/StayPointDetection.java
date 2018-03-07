@@ -22,9 +22,9 @@ public class StayPointDetection
 	private static final double distThresh = 0.1; /* In Kilometers */
 	private static final long timeThresh = 15; /* In Minutes */
 	
-	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException
+	public HashSet<StayPoint> detectStayPoint() throws JsonParseException, JsonMappingException, IOException
 	{
-		File file=new File("/home/nirmal/Downloads/Location_History.json");
+		File file=new File("/home/nirmal/Documents/Final-Year-Project/Location_History.json");
 		ObjectMapper mapper=new ObjectMapper();
 		LocationData data=mapper.readValue(file, LocationData.class);
 		ComputeMean computeMean=new ComputeMean();
@@ -32,12 +32,12 @@ public class StayPointDetection
 		int i=0;
 		int pointNum=data.getLocations().size();
 		
-		CalculateDistance gpsistance=new CalculateDistance();
+		CalculateDistance gpsDistance=new CalculateDistance();
 		CalculateTimeDifference timeDiff=new CalculateTimeDifference();
 		
 		HashSet<StayPoint> stayPoints=new HashSet<StayPoint>();
 		
-		while(i<pointNum)
+		while(i < pointNum)
 		{
 			int j = i + 1 ;
 			int Token = 0 ;
@@ -48,7 +48,7 @@ public class StayPointDetection
 				int lat2 = data.getLocations().get(j).getLatitudeE7();
 				int long2 = data.getLocations().get(j).getLatitudeE7();
 				
-				double dist=gpsistance.calculateDistance(long1, lat1, long2, lat2, "K");
+				double dist=gpsDistance.calculateDistance(long1, lat1, long2, lat2, "K");
 				
 				if(dist>distThresh)
 				{
@@ -73,9 +73,10 @@ public class StayPointDetection
 		}
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 		String stayPointFile = ow.writeValueAsString(stayPoints);
-		PrintWriter out = new PrintWriter("/home/nirmal/Downloads/Stay_Point.json");
+		PrintWriter out = new PrintWriter("/home/nirmal/Documents/Final-Year-Project/Stay_Points.json");
 		out.print(stayPointFile);
 		out.close();
-		System.out.println("Stay Points at : /home/nirmal/Downloads/Stay_Point.json");
+		System.out.println("Stay Points(JSON) at : /home/nirmal/Documents/Final-Year-Project/Stay_Points.json");
+		return stayPoints;
 	}
 }
