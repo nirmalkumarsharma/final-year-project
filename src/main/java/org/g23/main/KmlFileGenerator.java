@@ -14,7 +14,6 @@ public class KmlFileGenerator
 {
 	private final int convFactor=-7;
 	
-	@SuppressWarnings(value = { "" })
 	public void generateKML(HashSet<StayPoint> stayPoints) throws FileNotFoundException
 	{
 		File kmlCoordinatesFile=new File("/home/nirmal/Documents/Final-Year-Project/Stay_Points.kml");
